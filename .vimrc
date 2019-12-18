@@ -1,7 +1,10 @@
 set nocompatible              " be iMproved, required
 
 syntax enable           " enable syntax processing
+"set background=dark
+"colorscheme gruvbox
 set number              " show line numbers
+set ruler
 set tabstop=4           " number of visual spaces per TAB
 set shiftwidth=4
 set softtabstop=4       " number of spaces in tab when editing
@@ -22,12 +25,10 @@ set smartcase
 set path=$PWD/**
 set wildignore+=*/node_modules/*
 set wildignore+=*/dist/*
-set wildignore+=*/tags
 set directory=/tmp//
 set backupdir=/tmp//
 set undodir=/tmp//
-set tags+=~/tags/tags_cpp_include
-let &grepprg='grep -n --exclude={*.a,tags} --exclude-dir={node_modules,dist,build,stage,reports} $* /dev/null'
+let &grepprg='grep -n --exclude={*.a} --exclude-dir={node_modules,dist,build,stage,reports} $* /dev/null'
 
 highlight ExtraWhitespace ctermbg=darkgreen guibg=lightgreen
 :au InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$\| \+\ze\t/
@@ -44,7 +45,8 @@ let g:coc_global_extensions = [
 \ 'coc-html',
 \ 'coc-css',
 \ 'coc-angular',
-\ 'coc-snippets'
+\ 'coc-snippets',
+\ 'coc-rls'
 \ ]
 " augroup ProjectDrawer
 "   autocmd!
@@ -57,19 +59,6 @@ set updatetime=300
 
 " always show signcolumns
 set signcolumn=yes
-
-" Use tab for trigger completion with characters ahead and navigate.
-" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
-" inoremap <silent><expr> <TAB>
-"      \ pumvisible() ? "\<C-n>" :
-"      \ <SID>check_back_space() ? "\<TAB>" :
-"      \ coc#refresh()
-" inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-"function! s:check_back_space() abort
-"  let col = col('.') - 1
-"  return !col || getline('.')[col - 1]  =~# '\s'
-"endfunction
 
 " Use <C-l> for trigger snippet expand.
 imap <C-l> <Plug>(coc-snippets-expand)
@@ -85,6 +74,14 @@ let g:coc_snippet_prev = '<c-k>'
 
 " Use <C-j> for both expand and jump (make expand higher priority.)
 imap <C-j> <Plug>(coc-snippets-expand-jump)
+
+" Use tab for trigger completion with characters ahead and navigate.
+" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+"inoremap <silent><expr> <TAB>
+"      \ pumvisible() ? "\<C-n>" :
+"      \ <SID>check_back_space() ? "\<TAB>" :
+"      \ coc#refresh()
+"inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
 inoremap <silent><expr> <TAB>
       \ pumvisible() ? coc#_select_confirm() :
@@ -104,9 +101,9 @@ inoremap <silent><expr> <c-space> coc#refresh()
 
 " Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
 " Coc only does snippet and additional edit on confirm.
-inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+"inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 " Or use `complete_info` if your vim support it, like:
-" inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+"inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
 
 " Use `[g` and `]g` to navigate diagnostics
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
@@ -171,3 +168,8 @@ nnoremap <silent> <space>j  :<C-u>CocNext<CR>
 nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list
 nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
+
+autocmd FileType typescript setlocal shiftwidth=4 tabstop=4 softtabstop=4 expandtab=true
+autocmd FileType javascript setlocal shiftwidth=4 tabstop=4 softtabstop=4 expandtab=true
+autocmd FileType json setlocal shiftwidth=2 tabstop=2 softtabstop=2 expandtab=true
+autocmd FileType cpp setlocal shiftwidth=4 tabstop=4 softtabstop=4 expandtab=false
