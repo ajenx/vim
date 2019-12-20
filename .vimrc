@@ -169,7 +169,7 @@ nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list
 nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 
-autocmd FileType typescript setlocal shiftwidth=4 tabstop=4 softtabstop=4 expandtab=true
-autocmd FileType javascript setlocal shiftwidth=4 tabstop=4 softtabstop=4 expandtab=true
-autocmd FileType json setlocal shiftwidth=2 tabstop=2 softtabstop=2 expandtab=true
-autocmd FileType cpp setlocal shiftwidth=4 tabstop=4 softtabstop=4 expandtab=false
+autocmd FileType typescript setlocal shiftwidth=4 tabstop=4 softtabstop=4 expandtab
+autocmd FileType javascript setlocal shiftwidth=4 tabstop=4 softtabstop=4 expandtab
+autocmd FileType json setlocal shiftwidth=2 tabstop=2 softtabstop=2 expandtab
+autocmd FileType cpp setlocal shiftwidth=4 tabstop=4 softtabstop=4 expandtab
