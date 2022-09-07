@@ -44,7 +44,7 @@ call plug#begin('~/.config/nvim/plugged')
     Plug 'morhetz/gruvbox'
     Plug 'tpope/vim-fugitive'
 call plug#end()
-autocmd vimenter * ++nested colorscheme gruvbox
+autocmd VimEnter * ++nested colorscheme gruvbox
 
 " Find files using Telescope command-line sugar.
 nnoremap <leader>ff <cmd>Telescope find_files<cr>
