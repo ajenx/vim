@@ -54,15 +54,8 @@ nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 
 lua << eof
 require('telescope').setup{
-    pickers = {
-        find_files = {
-            theme = "dropdown",
-            layout_config = { width = 0.8, height = 0.5 }
-        },
-        live_grep = {
-            theme = "dropdown",
-            layout_config = { width = 0.8, height = 0.5 }
-        },
+    defaults = {
+        layout_strategy = "vertical"
     }
 }
 eof
