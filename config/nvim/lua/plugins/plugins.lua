@@ -9,39 +9,35 @@ return {
   },
   {
     "nvim-telescope/telescope.nvim",
-    opts = {
-      keys = {
-        { "<leader>ff", "<cmd>Telescope find_files<cr>" },
-        { "<leader>fg", "<cmd>Telescope live_grep<cr>" },
-        { "<leader>fb", "<cmd>Telescope buffers<cr>" },
-        { "<leader>fh", "<cmd>Telescope help_tags<cr>" }
+        opts = {
+      defaults = {
+        layout_strategy = "vertical"
       },
-      setup = {
-        defaults = {
-          layout_strategy = "vertical"
-        },
-        pickers = {
-          find_files = {
-            hidden = true
-          }
+      pickers = {
+        find_files = {
+          hidden = true
         }
       }
+    },
+    keys = {
+      { "<leader>ff", "<cmd>Telescope find_files<cr>" },
+      { "<leader>fg", "<cmd>Telescope live_grep<cr>" },
+      { "<leader>fb", "<cmd>Telescope buffers<cr>" },
+      { "<leader>fh", "<cmd>Telescope help_tags<cr>" }
     }
   },
   {
     "nvim-treesitter/nvim-treesitter",
     run = ":TSUpdate",
     opts = {
-      setup = {
-        ensure_installed = { "vim", "lua", "javascript", "typescript" },
-        highlight = {
-          enable = true,
-          -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
-          -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
-          -- Using this option may slow down your editor, and you may see some duplicate highlights.
-          -- Instead of true it can also be a list of languages
-          additional_vim_regex_highlighting = false,
-        }
+      ensure_installed = { "vim", "lua", "javascript", "typescript", "angular" },
+      highlight = {
+        enable = true,
+        -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+        -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+        -- Using this option may slow down your editor, and you may see some duplicate highlights.
+        -- Instead of true it can also be a list of languages
+        additional_vim_regex_highlighting = false,
       }
     }
   },
