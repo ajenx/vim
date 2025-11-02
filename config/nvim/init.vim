@@ -4,9 +4,9 @@ syntax enable           " enable syntax processing
 set background=dark
 set number              " show line numbers
 set ruler
-set tabstop=4           " number of visual spaces per TAB
-set shiftwidth=4
-set softtabstop=4       " number of spaces in tab when editing
+set tabstop=2           " number of visual spaces per TAB
+set shiftwidth=2
+set softtabstop=2       " number of spaces in tab when editing
 set expandtab           " tabs are spaces
 set showcmd             " show command in bottom bar
 set cursorline          " highlight current line
@@ -27,142 +27,22 @@ set wildignore+=*/dist/*
 set directory=/tmp//
 set backupdir=/tmp//
 set undodir=/tmp//
-let &grepprg='grep -n --exclude={*.a} --exclude-dir={node_modules,dist,build,stage,reports} $* /dev/null'
+let &grepprg='grep -n --exclude={*.a} --exclude-dir={.git,node_modules,dist,build,stage,reports} $* /dev/null'
 
 highlight ExtraWhitespace ctermbg=darkgreen guibg=lightgreen
 :au InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$\| \+\ze\t/
 :au InsertLeave * match ExtraWhitespace /\s\+$/
 
-if empty(glob('~/.config/nvim/autoload/plug.vim'))
-    silent execute '!curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-endif
-call plug#begin('~/.config/nvim/plugged')
-    Plug 'neoclide/coc.nvim', { 'branch': 'release' }
-    Plug 'nvim-lua/plenary.nvim'
-    Plug 'nvim-telescope/telescope.nvim'
-    Plug 'morhetz/gruvbox'
-    Plug 'tpope/vim-fugitive'
-call plug#end()
-autocmd VimEnter * ++nested colorscheme gruvbox
+lua require('config.lazy')
 
-" Find files using Telescope command-line sugar.
-nnoremap <leader>ff <cmd>Telescope find_files<cr>
-nnoremap <leader>fg <cmd>Telescope live_grep<cr>
-nnoremap <leader>fb <cmd>Telescope buffers<cr>
-nnoremap <leader>fh <cmd>Telescope help_tags<cr>
-
-lua << eof
-require('telescope').setup{                                                                                                                                                                                                                                                                 defaults = {
-        layout_strategy = "vertical"                                                                                                                                                                                                                                                        }
-}
-
-require'nvim-treesitter.configs'.setup {
-   ensure_installed = { "vim", "javascript", "typescript" },
-   highlight = {
-    enable = true,
-    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
-    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
-    -- Using this option may slow down your editor, and you may see some duplicate highlights.
-    -- Instead of true it can also be a list of languages
-    additional_vim_regex_highlighting = false,
-  }
-}
-eof
+" set foldmethod=expr
+" set foldexpr=nvim_treesitter#foldexpr()
 
 " let g:netrw_banner = 0
 let g:netrw_liststyle = 3
 " let g:netrw_browse_split = 4
 " let g:netrw_altv = 1
 let g:netrw_winsize = 25
-let g:coc_global_extensions = [
-\ 'coc-json',
-\ 'coc-tsserver',
-\ 'coc-html',
-\ 'coc-css',
-\ 'coc-angular',
-\ 'coc-snippets',
-\ 'coc-rls',
-"\ 'coc-clangd'
-\ ]
-" augroup ProjectDrawer
-"   autocmd!
-"  autocmd VimEnter * :Vexplore
-" augroup END
-
-
-" Coc settings
-
-" if hidden is not set, TextEdit might fail.
-set hidden
-
-" Some servers have issues with backup files, see #649
-set nobackup
-set nowritebackup
-
-" Better display for messages
-set cmdheight=2
-
-" You will have bad experience for diagnostic messages when it's default 4000.
-set updatetime=300
-
-" don't give |ins-completion-menu| messages.
-set shortmess+=c
-
-" always show signcolumns
-set signcolumn=yes
-
-" Use tab for trigger completion with characters ahead and navigate.
-" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
-" inoremap <silent><expr> <tab>
-"      \ pumvisible() ? "\<c-n>" :
-"       \ <sid>check_back_space() ? "\<tab>" :
-"       \ coc#refresh()
-" inoremap <expr><s-tab> pumvisible() ? "\<c-p>" : "\<c-h>"
-
-" coc snippet version
-inoremap <silent><expr> <TAB>
-      \ coc#pum#visible() ? coc#_select_confirm() :
-      \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
-      \ CheckBackSpace() ? "\<TAB>" :
-      \ coc#refresh()
-
-function! CheckBackSpace() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-
-let g:coc_snippet_next = '<tab>'
-
-" Use <c-space> to trigger completion.
-inoremap <silent><expr> <c-space> coc#refresh()
-
-" Make <CR> to accept selected completion item or notify coc.nvim to format
-" <C-g>u breaks current undo, please make your own choice.
-inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()                                                                                                                                                                                                                                                    \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
-" Or use `complete_info` if your vim support it, like:
-" inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
-
-" Use `[g` and `]g` to navigate diagnostics
-nmap <silent> [g <Plug>(coc-diagnostic-prev)
-nmap <silent> ]g <Plug>(coc-diagnostic-next)
-
-" Remap keys for gotos
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
-
-" Use K to show documentation in preview window
-nnoremap <silent> K :call <SID>show_documentation()<CR>
-
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  else
-    call CocAction('doHover')
-  endif
-endfunction
 
 function! s:get_filename_with_extension(ext)
     return substitute(expand('%:p'), '\(\.spec\)\?\.\(\w*\)\+$', '.' . a:ext, 'g')
@@ -174,15 +54,9 @@ endfunction
 
 command! GotoHtml :call s:open_filename_as('html')
 command! GotoCss :call s:open_filename_as('css')
+command! GotoScss :call s:open_filename_as('scss')
 command! GotoTs :call s:open_filename_as('ts')
 command! GotoSpec :call s:open_filename_as('spec.ts')
-
-" Highlight symbol under cursor on CursorHold
-autocmd CursorHold * silent call CocActionAsync('highlight')
-
-" Add status line support, for integration with other plugin, checkout `:h coc-status`
-set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
-
 
 autocmd FileType typescript setlocal shiftwidth=4 tabstop=4 softtabstop=4 expandtab
 autocmd FileType javascript setlocal shiftwidth=4 tabstop=4 softtabstop=4 expandtab
