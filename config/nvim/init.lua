@@ -23,11 +23,12 @@ vim.opt.wildignore:append { '*/node_modules/*', '*/dist/*' }
 vim.opt.directory='/tmp//'
 vim.opt.backupdir='/tmp//'
 vim.opt.undodir='/tmp//'
+vim.opt.list=true
 vim.cmd([[let &grepprg='grep -n --exclude={*.a} --exclude-dir={.git,node_modules,dist,build,stage,reports} $* /dev/null']])
 
-vim.cmd([[highlight ExtraWhitespace ctermbg=darkgreen guibg=lightgreen]])
-vim.cmd([[:au InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$\| \+\ze\t/]])
-vim.cmd([[:au InsertLeave * match ExtraWhitespace /\s\+$/]])
+-- vim.cmd([[highlight ExtraWhitespace ctermbg=darkgreen guibg=lightgreen]])
+-- vim.cmd([[:au InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$\| \+\ze\t/]])
+-- vim.cmd([[:au InsertLeave * match ExtraWhitespace /\s\+$/]])
 
 require('config.lazy')
 
@@ -40,23 +41,63 @@ vim.g.netrw_liststyle = 3
 -- let g:netrw_altv = 1
 vim.g.netrw_winsize = 25
 
-vim.cmd([[
-function! s:get_filename_with_extension(ext)
-    return substitute(expand('%:p'), '\(\.spec\)\?\.\(\w*\)\+$', '.' . a:ext, 'g')
-endfunction
-]])
+function open_filename_as(ext)
+    vim.api.nvim_command('e ' .. get_filename_with_extension(ext))
+end
 
-vim.cmd([[
-function! s:open_filename_as(ext)
-    execute 'e ' . s:get_filename_with_extension(a:ext)
-endfunction
-]])
+function get_filename_with_extension(ext)
+    return vim.fn.substitute(vim.fn.expand('%:p'), '\\(\\.spec\\)\\?\\.\\(\\w*\\)\\+$', '.' .. ext, 'g')
+end
 
-vim.cmd([[command! GotoHtml :call s:open_filename_as('html')]])
-vim.cmd([[command! GotoCss :call s:open_filename_as('css')]])
-vim.cmd([[command! GotoScss :call s:open_filename_as('scss')]])
-vim.cmd([[command! GotoTs :call s:open_filename_as('ts')]])
-vim.cmd([[command! GotoSpec :call s:open_filename_as('spec.ts')]])
+vim.api.nvim_create_user_command(
+  'GotoHtml',
+  function()
+    open_filename_as('html')
+  end,
+  {
+    nargs = 0
+  }
+)
+
+vim.api.nvim_create_user_command(
+  'GotoCss',
+  function()
+    open_filename_as('css')
+  end,
+  {
+    nargs = 0
+  }
+)
+
+vim.api.nvim_create_user_command(
+  'GotoScss',
+  function()
+    open_filename_as('scss')
+  end,
+  {
+    nargs = 0
+  }
+)
+
+vim.api.nvim_create_user_command(
+  'GotoTs',
+  function()
+    open_filename_as('ts')
+  end,
+  {
+    nargs = 0
+  }
+)
+
+vim.api.nvim_create_user_command(
+  'GotoSpec',
+  function()
+    open_filename_as('spec.ts')
+  end,
+  {
+    nargs = 0
+  }
+)
 
 vim.cmd([[autocmd FileType typescript setlocal shiftwidth=4 tabstop=4 softtabstop=4 expandtab]])
 vim.cmd([[autocmd FileType javascript setlocal shiftwidth=4 tabstop=4 softtabstop=4 expandtab]])
